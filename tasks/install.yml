@@ -21,7 +21,7 @@
 
 - name: download and uutar tarball
   unarchive:
-    src: "https://github.com/William-Yeh/ansible-monit-tarball/releases/download/{{ monit_version }}/{{ monit_tarball_file }}"
+    src: "https://github.com/stampay/ansible-monit-tarball/releases/download/{{ monit_version }}/{{ monit_tarball_file }}"
     dest: "{{ monit_download_path }}"
     copy: no
 
