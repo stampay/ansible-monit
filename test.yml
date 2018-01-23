@@ -1,11 +1,9 @@
 - hosts: all
-  become: True
-  tasks:
-    - include: 'tasks/main.yml'
-  handlers:
-    - include: 'handlers/main.yml'
+  become: yes
   vars_files:
     - 'defaults/main.yml'
+  roles:
+    - ansible-monit
 
   vars:
   #  monit_conf_others:

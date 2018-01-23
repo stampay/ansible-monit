@@ -6,7 +6,7 @@
 #
 
 - name: set role variables, if necessary
-  include: set-role-variables.yml
+  include_tasks: set-role-variables.yml
 
 
 - name: install libselinux-python binary for Ansible to work
@@ -26,7 +26,7 @@
   register: monit_is_installed
 
 - name: install monit
-  include: install.yml
+  include_tasks: install.yml
   when: (monit_is_installed.stdout|from_json).not_found
   notify:
     - restart monit
