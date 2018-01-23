@@ -1,36 +1,23 @@
-sudo: true
+---
+
+language: python
+python: "2.7"
 services:
-    - docker
+  - docker
 
 before_install:
-    - docker info
-    - docker version
+  - sudo apt-get autoremove -y -qq
+  - sudo apt-get update -qq -y
+  - sudo apt-get install -qq -y python-apt python-pycurl locales
+  - echo 'en_US.UTF-8 UTF-8' | sudo tee /var/lib/locales/supported.d/local
 
-    - docker build  -f test/Dockerfile-ubuntu16.04  -t monit_xenial   .
-    - docker build  -f test/Dockerfile-ubuntu14.04  -t monit_trusty   .
-    - docker build  -f test/Dockerfile-ubuntu12.04  -t monit_precise  .
-    - docker build  -f test/Dockerfile-debian8      -t monit_jessie   .
-    - docker build  -f test/Dockerfile-debian7      -t monit_wheezy   .
-    - docker build  -f test/Dockerfile-centos7      -t monit_centos7  .
-    - docker build  -f test/Dockerfile-centos6      -t monit_centos6  .
+install:
+  - pip install ansible=2.4.2.0
 
 script:
-    - docker run  -v $(pwd):/data  monit_xenial
-    - docker run  -v $(pwd):/data  monit_trusty
-    - docker run  -v $(pwd):/data  monit_precise
-    - docker run  -v $(pwd):/data  monit_jessie
-    - docker run  -v $(pwd):/data  monit_wheezy
-    - docker run  -v $(pwd):/data  monit_centos7
-    - docker run  -v $(pwd):/data  monit_centos6
+  - echo localhost > inventory
 
-    - echo "==> Validating the test results..."
-    - grep 'Monit .*uptime:' result-ubuntu16.04
-    - grep 'Monit .*uptime:' result-ubuntu14.04
-    - grep 'Monit .*uptime:' result-ubuntu12.04
-    - grep 'Monit .*uptime:' result-debian8
-    - grep 'Monit .*uptime:' result-debian7
-    - grep 'Monit .*uptime:' result-centos7
-    - grep 'Monit .*uptime:' result-centos6
+  # Syntax check
+  - ansible-playbook -i inventory tests/playbook.yml --syntax-check
 
-notifications:
-    webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  - docker build -f tests/Dockerfile-ubuntu16.04 -t monit_xenial .
