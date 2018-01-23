@@ -17,7 +17,4 @@ install:
 script:
   - echo localhost > inventory
 
-  # Syntax check
-  - ansible-playbook -i inventory tests/playbook.yml --syntax-check
-
   - docker build -f tests/Dockerfile-ubuntu16.04 -t monit_xenial .
