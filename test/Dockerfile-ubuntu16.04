@@ -1,31 +1,18 @@
-# Dockerfile for building image that contains software stack provisioned by Ansible.
-#
-# Version  1.0
-#
+FROM ubuntu:16.04
+MAINTAINER stampay
 
+# Setup system with minimum requirements + ansible
+RUN apt-get update -qq && \
+    apt-get install -qq python-apt python-pycurl python-pip python-dev \
+                        libffi-dev libssl-dev locales sudo && \
+    echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
+    pip install -U setuptools && \
+    pip install -q ansible==2.4.2.0
 
-# pull base image
-FROM williamyeh/ansible:ubuntu16.04-onbuild
+# Copy our role into the container, using our role name
+WORKDIR /tmp/williamyeh.monit
+COPY  .  /tmp/williamyeh.monit
 
-MAINTAINER William Yeh <william.pjyeh@gmail.com>
-
-
-#
-# build phase
-#
-
-ENV PLAYBOOK test.yml
-RUN ansible-playbook-wrapper
-
-
-
-#
-# test phase
-#
-
-VOLUME ["/data"]
-ENV    RESULT     /data/result-ubuntu16.04
-
-CMD \
-    service monit start  &&  sleep 10  && \
-    /usr/bin/monit status  > $RESULT
+# Run our play
+RUN echo localhost > inventory
+RUN ansible-playbook -i inventory -c local tests/playbook.yml
