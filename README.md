@@ -2,7 +2,7 @@
 williamyeh.monit for Ansible Galaxy
 ============
 
-[![Circle CI](https://circleci.com/gh/William-Yeh/ansible-monit.svg?style=shield)](https://circleci.com/gh/William-Yeh/ansible-monit) [![Build Status](https://travis-ci.org/William-Yeh/ansible-monit.svg?branch=master)](https://travis-ci.org/William-Yeh/ansible-monit)
+[![Build Status](https://travis-ci.org/stampay/ansible-monit.svg?branch=master)](https://travis-ci.org/stampay/ansible-monit)
 
 
 
@@ -17,6 +17,8 @@ This Ansible role has the following features for [Monit](https://mmonit.com/moni
  - Bare bone configuration (*real* configuration should be left to user's template files; see **Usage** section below).
 
 
+## Downloads
+We download tarballs from https://github.com/stampay/ansible-monit-tarball
 
 
 ## Role Variables
@@ -24,9 +26,6 @@ This Ansible role has the following features for [Monit](https://mmonit.com/moni
 ### Mandatory variables
 
 None.
-
-
-
 
 ### Optional variables
 
@@ -54,8 +53,8 @@ User-configurable defaults:
 
 ```yaml
 # version;
-# supported versions: 5.20.0, 5.17.1, 5.15, 5.14
-monit_version:              5.20.0
+# supported versions: 5.25.1 5.20.0, 5.17.1, 5.15, 5.14
+monit_version:              5.25.1
 
 # HTTP port for status report
 monit_port:                 2812
