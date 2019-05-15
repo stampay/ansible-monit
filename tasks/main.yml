@@ -53,7 +53,7 @@
 
 - name: copy other monit config files from playbook's, if any
   template: src={{ playbook_dir }}/{{ item.value.src }}  dest={{ monit_config_path }}/{{ item.value.dest }}
-  when: item.value.when
+  when: "{{ item.value.when }}"
   with_dict: "{{ monit_conf_others | default({}) }}"
   notify:
     - restart monit
