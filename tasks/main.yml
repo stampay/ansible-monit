@@ -31,8 +31,6 @@
   notify:
     - restart monit
 
-
-
 - name: mkdir for config and data
   file:
     path: "{{ item }}"
@@ -40,7 +38,6 @@
   with_items:
     - "{{ monit_config_path }}"
     - "{{ monit_db_path }}"
-
 
 - name: copy monit main config file from role's default, if necessary
   template: src=../templates/monitrc.j2  dest=/etc/monitrc  mode="0700"
@@ -56,6 +53,7 @@
 
 - name: copy other monit config files from playbook's, if any
   template: src={{ playbook_dir }}/{{ item.value.src }}  dest={{ monit_config_path }}/{{ item.value.dest }}
+  when: item.value.when|default(true)
   with_dict: "{{ monit_conf_others | default({}) }}"
   notify:
     - restart monit
